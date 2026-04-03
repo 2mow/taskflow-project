@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  user-service:
+    build: ./user-service
+    container_name: user-service
+    ports:
+      - "3001:3001"
+
+  task-service:
+    build: ./task-service
+    container_name: task-service
+    ports:
+      - "3002:3002"
+
+  gateway:
+    build: ./gateway
+    container_name: gateway
+    ports:
+      - "3000:3000"
+    depends_on:
+      - user-service
+      - task-service
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - gateway
